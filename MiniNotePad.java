@@ -15,7 +15,7 @@ public abstract class MiniNotePad {
         String fName=sc.nextLine();
         fName+=".txt";
         try{
-        FileWriter fw=new FileWriter(fName);
+        FileWriter fw=new FileWriter(fName,true);
         BufferedWriter bw=new BufferedWriter(fw);
         System.err.println("Please start your notes");
         String sinput;
@@ -46,7 +46,19 @@ public abstract class MiniNotePad {
         System.out.println("error occured reading file");
     }
     }
-    public abstract  void clearNote();
+    public static void clearNote(String s){
+        try{
+            s+=".txt";
+        FileWriter fw =new FileWriter(s);
+        BufferedWriter bw=new BufferedWriter(fw);
+        bw.close();
+        fw.close();
+        }
+        catch(IOException e){
+            System.out.println("cant open file desired");
+        }
+        System.out.println("File deleted successfully");
+    }
     public abstract  void backupNote();
     public static void main(String[] args){
         Scanner sc=new Scanner(System.in);
@@ -64,7 +76,9 @@ public abstract class MiniNotePad {
             viewNote();
             break;
             case 3:
-            //clearNote();break;
+            sc.nextLine();
+            System.out.println("Enter notes to be cleared");
+            clearNote(sc.nextLine());break;
             case 4:
             //backupNote();break;
             default:
