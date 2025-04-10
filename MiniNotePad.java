@@ -12,16 +12,15 @@ import java.util.Scanner;
 public class MiniNotePad {
     public static void writeNote(String fName){
         Scanner sc=new Scanner(System.in);
-        fName+=".txt";
+        fName="notes/"+fName+".txt";
         try{
             File ff=new File(fName);
-            if(ff.exists()){System.out.println("Ooops note already exits..Do you want to add to it?(y/n)");
-            if(sc.nextLine().equalsIgnoreCase("n"))
-            {
+            while(ff.exists()){
+                System.out.println("Oops, note already exists..Do you want to add to it? (y/n)");
+                if (sc.nextLine().equalsIgnoreCase("y")) break;
                 System.out.println("Give another name");
-            writeNote(sc.nextLine());
-            return;
-            }
+                fName = sc.nextLine() + ".txt";
+                ff = new File(fName);
         }
 
         FileWriter fw=new FileWriter(fName,true);
@@ -40,7 +39,7 @@ public class MiniNotePad {
         System.out.println("End of Notes");
     }
     public static void viewNote(String fName){
-        fName+=".txt";
+        fName="notes/"+fName+".txt";
         File ff=new File(fName);
             if(!ff.exists()){
                 System.out.println("File doesnot exist");
@@ -57,11 +56,12 @@ public class MiniNotePad {
         fr.close();
     }catch(IOException e){
         System.out.println("error occured reading file");
+        System.out.println("Error: " + e.getMessage());
     }
     }
     public static void clearNote(String s){
         try{
-            s+=".txt";
+            s="notes/"+s+".txt";
             File ff=new File(s);
             if(!ff.exists()){
                 System.err.println("No such note exists");return;
@@ -73,11 +73,13 @@ public class MiniNotePad {
         }
         catch(IOException e){
             System.out.println("cant open file desired");
+            System.out.println("Error: " + e.getMessage());
         }
         System.out.println("File deleted successfully");
     }
     public static void backupNote(String fName){
-        fName+=".txt";
+        String bfName="backup/copy"+fName+".txt";
+        fName="notes/"+fName+".txt";
         try{
             File ff=new File(fName);
             if(!ff.exists()){
@@ -86,19 +88,20 @@ public class MiniNotePad {
         FileReader fr=new FileReader(fName);
         BufferedReader br =new BufferedReader(fr);
         fName="copy"+fName;
-        FileWriter fw=new FileWriter(fName);
+        FileWriter fw=new FileWriter(bfName);
         BufferedWriter bw=new BufferedWriter(fw);
         String t;
         while((t=br.readLine())!=null){
-            bw.write(t);bw.flush();bw.newLine();
-        }
+            bw.write(t);bw.newLine();
+        }bw.flush();
         bw.close();
         br.close();
     }catch(IOException e){
         System.out.println("error occured copying");
+        System.out.println("Error: " + e.getMessage());
     }
     finally{
-        System.out.println("copied files into "+fName);}
+        System.out.println("backed up notes");}
     }
     public static void main(String[] args){
         Scanner sc=new Scanner(System.in);
