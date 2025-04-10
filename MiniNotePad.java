@@ -2,6 +2,7 @@ package apps.NotePadCustom;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 //import java.io.IO;
@@ -9,12 +10,20 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class MiniNotePad {
-    public static void writeNote(){
+    public static void writeNote(String fName){
         Scanner sc=new Scanner(System.in);
-        System.out.println("Enter the name of the file");
-        String fName=sc.nextLine();
         fName+=".txt";
         try{
+            File ff=new File(fName);
+            if(ff.exists()){System.out.println("Ooops note already exits..Do you want to add to it?(y/n)");
+            if(sc.nextLine().equalsIgnoreCase("n"))
+            {
+                System.out.println("Give another name");
+            writeNote(sc.nextLine());
+            return;
+            }
+        }
+
         FileWriter fw=new FileWriter(fName,true);
         BufferedWriter bw=new BufferedWriter(fw);
         System.err.println("Please start your notes");
@@ -30,11 +39,10 @@ public class MiniNotePad {
     }
         System.out.println("End of Notes");
     }
-    public static void viewNote(){
-        Scanner sc=new Scanner(System.in);
-        System.out.println("enter name of the file");
+    public static void viewNote(String fName){
+        fName+=".txt";
         try{
-        FileReader fr=new FileReader(sc.nextLine());    
+        FileReader fr=new FileReader(fName);    
         BufferedReader br=new BufferedReader(fr);
         String line;
         while ((line = br.readLine()) != null) {
@@ -59,12 +67,9 @@ public class MiniNotePad {
         }
         System.out.println("File deleted successfully");
     }
-    public static void backupNote(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Please Enter file to be copied");
-        String fName=sc.nextLine()+".txt";
+    public static void backupNote(String fName){
+        fName+=".txt";
         try{
-        
         FileReader fr=new FileReader(fName);
         BufferedReader br =new BufferedReader(fr);
         fName="copy"+fName;
@@ -89,21 +94,22 @@ public class MiniNotePad {
                         "3. Clear Notes\r\n" + //
                         "4. Backup Notes\r\n" + //
                         "5. Exit");
-        //int function=sc.nextInt();
-        switch (sc.nextInt()) {
+        int function=sc.nextInt();sc.nextLine();
+        switch (function) {
             case 1:
-                writeNote();
-                break;
+            System.out.println("Enter name of notes");
+            writeNote(sc.nextLine());
+            break;
             case 2:
-            viewNote();
+            System.out.println("Enter notes you want to view");
+            viewNote(sc.nextLine());
             break;
             case 3:
-            sc.nextLine();
             System.out.println("Enter notes to be cleared");
             clearNote(sc.nextLine());break;
             case 4:
-            sc.nextLine();
-            backupNote();break;
+            System.out.println("Enter notes to be copied");
+            backupNote(sc.nextLine());break;
             default:
                 break;
         }
