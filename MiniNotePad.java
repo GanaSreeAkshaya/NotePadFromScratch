@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public abstract class MiniNotePad {
+public class MiniNotePad {
     public static void writeNote(){
         Scanner sc=new Scanner(System.in);
         System.out.println("Enter the name of the file");
@@ -59,7 +59,29 @@ public abstract class MiniNotePad {
         }
         System.out.println("File deleted successfully");
     }
-    public abstract  void backupNote();
+    public static void backupNote(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Please Enter file to be copied");
+        String fName=sc.nextLine()+".txt";
+        try{
+        
+        FileReader fr=new FileReader(fName);
+        BufferedReader br =new BufferedReader(fr);
+        fName="copy"+fName;
+        FileWriter fw=new FileWriter(fName);
+        BufferedWriter bw=new BufferedWriter(fw);
+        String t;
+        while((t=br.readLine())!=null){
+            bw.write(t);bw.flush();bw.newLine();
+        }
+        bw.close();
+        br.close();
+    }catch(IOException e){
+        System.out.println("error occured copying");
+    }
+    finally{
+        System.out.println("copied files into "+fName);}
+    }
     public static void main(String[] args){
         Scanner sc=new Scanner(System.in);
         System.out.println("Enter your choice\n1. Write Notes\r\n" + //
@@ -80,7 +102,8 @@ public abstract class MiniNotePad {
             System.out.println("Enter notes to be cleared");
             clearNote(sc.nextLine());break;
             case 4:
-            //backupNote();break;
+            sc.nextLine();
+            backupNote();break;
             default:
                 break;
         }
