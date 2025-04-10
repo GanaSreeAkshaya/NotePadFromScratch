@@ -41,6 +41,11 @@ public class MiniNotePad {
     }
     public static void viewNote(String fName){
         fName+=".txt";
+        File ff=new File(fName);
+            if(!ff.exists()){
+                System.out.println("File doesnot exist");
+                return;
+            }
         try{
         FileReader fr=new FileReader(fName);    
         BufferedReader br=new BufferedReader(fr);
@@ -57,6 +62,10 @@ public class MiniNotePad {
     public static void clearNote(String s){
         try{
             s+=".txt";
+            File ff=new File(s);
+            if(!ff.exists()){
+                System.err.println("No such note exists");return;
+            }
         FileWriter fw =new FileWriter(s);
         BufferedWriter bw=new BufferedWriter(fw);
         bw.close();
@@ -70,6 +79,10 @@ public class MiniNotePad {
     public static void backupNote(String fName){
         fName+=".txt";
         try{
+            File ff=new File(fName);
+            if(!ff.exists()){
+                System.out.println("Cant copy no such file exists");return;
+            }
         FileReader fr=new FileReader(fName);
         BufferedReader br =new BufferedReader(fr);
         fName="copy"+fName;
